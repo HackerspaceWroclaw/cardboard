@@ -32,6 +32,21 @@ module trapezium(wt, wb, h, thick = thickness()) {
 
 //-----------------------------------------------------------------------------
 
+// direction of border adds `adjust' to specified width and height in the
+// direction, so no plane is left uncovered
+module cut(w = 2, h = 2, thick = thickness(), adjust = 0.01,
+           top = false, down = false, left = false, right = false) {
+  cut_w = (left && right) ? w + 2 * adjust : (left || right) ? w + adjust : w;
+  cut_h = (top  && down)  ? h + 2 * adjust : (top  || down)  ? h + adjust : h;
+  cut_x = left ? -adjust : 0;
+  cut_y = down ? -adjust : 0;
+
+  translate([cut_x, cut_y, -thick])
+  cube([cut_w, cut_h, thick * 2]);
+}
+
+//-----------------------------------------------------------------------------
+
 // TODO: orientation
 module sheet(w = 10, h = 10, thick = thickness()) {
   translate([0, 0, -thick / 2])
