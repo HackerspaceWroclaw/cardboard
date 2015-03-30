@@ -4,6 +4,5 @@ schematy do stworzenia:
   * stojak na clippad
   * stojak na tablicę
   * pulpit na książkę
-  * przenośne stanowisko pracy (tacka)
   * kojec na karton
   * kartonowóz
