@@ -1,5 +1,4 @@
 schematy do stworzenia:
-  * wieszak na kable do salki prób
   * półka do salki prób
     * uchwyt na kartkę
   * stojak na clippad
