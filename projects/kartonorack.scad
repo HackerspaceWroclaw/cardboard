@@ -88,10 +88,10 @@ module front_wall() {
   difference() {
     sheet(w = wall_width, h = wall_height);
 
-    translate([cut_leg, -0.01, 0])
-    sheet(w = cut_width, h = 0.5 * winterm_height() + 0.01, thick = 2 * thickness());
+    translate([cut_leg, 0, 0])
+    cut(w = cut_width, h = 0.5 * winterm_height(), down = true);
     translate([cut_leg, 0.8 * winterm_height(), 0])
-    sheet(w = cut_width, h = 0.2 * winterm_height() + 0.01, thick = 2 * thickness());
+    cut(w = cut_width, h = 0.2 * winterm_height(), top = true);
   }
 }
 
