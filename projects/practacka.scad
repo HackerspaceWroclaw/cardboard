@@ -12,11 +12,6 @@ height = 20 * 1.5;
 difference() {
   cube([width, height, 1], center = true);
 
-  translate([ (width / 2 - 2), 0, 0])
-  chwyt(d = 1, l = 6, thick = 1.01);
-  translate([-(width / 2 - 2), 0, 0])
-  chwyt(d = 1, l = 6, thick = 1.01);
-
   translate([-(width / 2 - 1), height / 2 - 4 - 1, 0.5 - 0.3]) {
     // left socket
     cube([4, 4, 0.31]);
@@ -34,6 +29,15 @@ difference() {
   }
 }
 
+// rope handles (instead of cut-through ones)
+color("gray") {
+  translate([ (width / 2 - 2), 0, 0])
+  rope_handle(h = 2.5, w = 8,, rh = 1, rw = 1.5);
+  translate([-(width / 2 - 2), 0, 0])
+  rope_handle(h = 2.5, w = 8, rh = 1, rw = 1.5);
+}
+
+// edge
 color("pink") {
   translate([-width / 2, -height / 2, 0.5])
   cube([0.2, height, 0.5]);
@@ -45,14 +49,38 @@ color("pink") {
 
 //----------------------------------------------------------------------------
 
-module chwyt(d = 2, l = 4, thick = 1) {
-  translate([0,  (l - d) / 2, -thick / 2])
-  cylinder(r = d / 2, h = thick, $fn = 12);
+module rope_handle(rd = 0.6, h = 4, w = 11, rh = 2, rw = 3) {
+  total_height = h;
+  total_width  = w;
+  round_height = rh;
+  round_width  = rw;
 
-  translate([0, -(l - d) / 2, -thick / 2])
-  cylinder(r = d / 2, h = thick, $fn = 12);
+  straight_height = total_height - round_height;
+  straight_width = total_width - 2 * round_width;
 
-  cube([d, (l - d), thick], center = true);
+  rotate([0, 0, 90])
+  translate([-total_width / 2, 0, 0]) {
+    cylinder(r = rd / 2, h = straight_height, $fn = 12);
+
+    translate([0, 0, straight_height])
+    for (s = [0:1:90]) {
+      translate([round_width * (1 - cos(s)), 0, sin(s) * round_height])
+      sphere(r = rd / 2, $fn = 12);
+    }
+
+    translate([round_width, 0, round_height + straight_height])
+    rotate([0, 90, 0])
+    cylinder(r = rd / 2, h = straight_width, $fn = 12);
+
+    translate([round_width + straight_width, 0, straight_height])
+    for (s = [0:1:90]) {
+      translate([round_width * cos(s), 0, sin(s) * round_height])
+      sphere(r = rd / 2, $fn = 12);
+    }
+
+    translate([2 * round_width + straight_width, 0, 0])
+    cylinder(r = rd / 2, h = straight_height, $fn = 12);
+  }
 }
 
 //----------------------------------------------------------------------------
