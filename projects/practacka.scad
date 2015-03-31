@@ -17,19 +17,20 @@ difference() {
   translate([-(width / 2 - 2), 0, 0])
   chwyt(d = 1, l = 6, thick = 1.01);
 
-  // left socket
-  translate([-(width / 2 - 1), height / 2 - 4 - 1, 0.5 - 0.3])
-  cube([4, 4, 0.31]);
-  // right socket
-  translate([-(width / 2 - 1 - 4 - 0.5), height / 2 - 4 - 1, 0.5 - 0.3]) {
-    // top part
-    cube([4, 1.95, 0.31]);
-    translate([0, 2.05, 0])
-    // bottom part
-    cube([4, 1.95, 0.31]);
-    // separator
-    translate([0, 1.94, 0.15])
-    cube([4, 0.12, 0.16]);
+  translate([-(width / 2 - 1), height / 2 - 4 - 1, 0.5 - 0.3]) {
+    // left socket
+    cube([4, 4, 0.31]);
+    // right socket
+    translate([(4 + 0.5), 0, 0]) {
+      // top part
+      cube([4, 1.95, 0.31]);
+      translate([0, 2.05, 0])
+      // bottom part
+      cube([4, 1.95, 0.31]);
+      // separator
+      translate([0, 1.94, 0.15])
+      cube([4, 0.12, 0.16]);
+    }
   }
 }
 
