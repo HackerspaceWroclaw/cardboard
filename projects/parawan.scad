@@ -20,26 +20,9 @@ translate([-frame_w / 2, -frame_w / 2, -back_board_thick / 2])
 sheet(h = board_h + frame_w, w = board_w + frame_w, thick = back_board_thick);
 
 // border around the board
-color("brown") {
-  // left
-  translate([-frame_w / 2, -frame_w / 2, front_board_thick])
-  border(board_h + frame_w, frame_w, front_board_thick + back_board_thick);
-
-  // right
-  translate([board_w + frame_w - frame_w / 2, -frame_w / 2, front_board_thick])
-  mirror([1, 0, 0])
-  border(board_h + frame_w, frame_w, front_board_thick + back_board_thick);
-
-  // bottom
-  translate([-frame_w / 2, -frame_w / 2, front_board_thick])
-  mirror([1, -1, 0])
-  border(board_w + frame_w, frame_w, front_board_thick + back_board_thick);
-
-  // top
-  translate([board_w + frame_w - frame_w / 2, board_h + frame_w - frame_w / 2, front_board_thick])
-  mirror([-1, -1, 0])
-  border(board_w + frame_w, frame_w, front_board_thick + back_board_thick);
-}
+color("brown")
+translate([-frame_w / 2, -frame_w / 2, front_board_thick])
+frame(board_h + frame_w, board_w + frame_w, frame_w, front_board_thick + back_board_thick);
 
 sash(angle = 0);
 
@@ -79,21 +62,7 @@ module sash(angle = 0) {
         sheet(h = board_h + frame_w, w = (board_w + frame_w) / 2 - thickness(), thick = back_board_thick);
         color("red")
         translate([0, 0, back_board_thick / 2])
-        {
-          // near hinge
-          border(board_h + frame_w, frame_w, back_board_thick);
-          // far from hinge
-          translate([(board_w + frame_w) / 2 - thickness(), 0, 0])
-          mirror([1, 0, 0])
-          border(board_h + frame_w, frame_w, back_board_thick);
-          // bottom
-          mirror([1, -1, 0])
-          border((board_w + frame_w) / 2, frame_w, back_board_thick);
-          // top
-          translate([(board_w + frame_w) / 2, board_h + frame_w, 0])
-          mirror([-1, -1, 0])
-          border((board_w + frame_w) / 2, frame_w, back_board_thick);
-        }
+        frame(sh = board_h + frame_w, sw = (board_w + frame_w) / 2 - thickness(), fw = frame_w, ft = back_board_thick);
       }
     }
   }
@@ -128,8 +97,32 @@ module hinge(length = 2, width = 8, pin_diameter = 0.4, angle = 60) {
 
 // }}}
 //----------------------------------------------------------------------------
+// full frame {{{
+
+module frame(sh, sw, fw, ft) { // sheet width and height, frame width and thickness
+  // left
+  border(len = sh, width = fw, thick = ft);
+
+  // right
+  translate([sw, 0, 0])
+  mirror([1, 0, 0])
+  border(len = sh, width = fw, thick = ft);
+
+  // top
+  translate([sw, sh, 0])
+  mirror([-1, -1, 0])
+  border(len = sw, width = fw, thick = ft);
+
+  // bottom
+  mirror([1, -1, 0])
+  border(len = sw, width = fw, thick = ft);
+}
+
+// }}}
+//----------------------------------------------------------------------------
 // border {{{
 
+// (0,0) is at the corner of the sheet being wrapped around
 module border(len, width, thick) {
   difference() {
     union() {
